@@ -34,6 +34,7 @@ private slots:
     // Interaction Functions
     void on_FrequencySlider_1_valueChanged(int value);
     void on_SineButton_1_clicked(bool);
+    void on_FreqDomain_1_clicked(bool);
 
     void on_FrequencySlider_2_valueChanged(int value);
     void on_SineButton_2_clicked(bool);

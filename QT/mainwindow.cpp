@@ -46,6 +46,22 @@ void MainWindow::on_SineButton_1_clicked(bool) {
     drawWaveFromFile(graph, file);
 }
 
+void MainWindow::on_FreqDomain_1_clicked(bool) {
+    TimeDomain* graph = ui->timeDomainInput_1;
+
+    QString currentDirectory = QDir::currentPath();
+    QString file = currentDirectory + "/audio_files/gen_sine_1.wav";
+
+    drawWaveFromFile(graph, "");
+
+    generateSineWav(sineWave_1, sineWaveFrequency_1, file);
+    //fft here
+
+    drawWaveFromFile(graph, file);
+    //destroy fft in/out here
+}
+
+
 void MainWindow::on_FrequencySlider_2_valueChanged(int value) {
     ui->FrequencyLabel_2->setText(QString::number(value) + "Hz");
     sineWaveFrequency_2 = value;
