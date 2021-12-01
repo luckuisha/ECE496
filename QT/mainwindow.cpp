@@ -3,6 +3,7 @@
 
 #include <Stk.h>
 #include "FileWvOut.h"
+#include "fftw3.h"
 
 #include <iostream>
 MainWindow::MainWindow(QWidget *parent)
@@ -45,6 +46,41 @@ void MainWindow::on_SineButton_1_clicked(bool) {
     generateSineWav(sineWave_1, sineWaveFrequency_1, file);
     drawWaveFromFile(graph, file);
 }
+
+void MainWindow::on_FreqDomain_1_clicked(bool) {
+    TimeDomain* graph = ui->timeDomainInput_1;
+
+    QString currentDirectory = QDir::currentPath();
+    QString file = currentDirectory + "/audio_files/gen_sine_1.wav";
+
+    drawWaveFromFile(graph, "");
+
+    generateSineWav(sineWave_1, sineWaveFrequency_1, file);
+    //TODO: Move this all into a cpp in the backend
+    //fft here
+    mFftIn  = fftw_alloc_real(4410);
+    mFftOut = fftw_alloc_real(4410);
+    mFftPlan = fftw_plan_r2r_1d(4410, mFftIn, mFftOut, FFTW_R2HC,FFTW_ESTIMATE);
+
+    //file->mFftIn
+    for(int i = 0; i < 4410; i++) {
+        mFftIn[i] = 0.5*(sineWave_1.tick());
+    }
+    fftw_execute(mFftPlan);
+    //FftOut->file
+    stk::FileWvOut output;
+    // Open a 16-bit, one-channel WAV formatted output file
+    output.openFile(file.toStdString(), 1, stk::FileWrite::FILE_WAV, stk::Stk::STK_SINT16);
+    for(int i = 0; i < 4410; i++) {
+        output.tick(mFftOut[i]);
+    }
+
+    drawWaveFromFile(graph, file);
+    //destroy fft in/out here
+    fftw_free(mFftIn);
+    fftw_free(mFftOut);
+}
+
 
 void MainWindow::on_FrequencySlider_2_valueChanged(int value) {
     ui->FrequencyLabel_2->setText(QString::number(value) + "Hz");
@@ -121,4 +157,9 @@ void MainWindow::generateSuperimposedWav(QString file) {
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    //TODO: Should we free here?
+    //fftw_free(mFftIn);
+    //fftw_free(mFftOut);
+    fftw_destroy_plan(mFftPlan);
 }

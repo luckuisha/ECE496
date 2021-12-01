@@ -7,6 +7,7 @@
 #include <QMainWindow>
 #include "timedomain.h"
 #include <SineWave.h>
+#include "fftw3.h"
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -34,6 +35,7 @@ private slots:
     // Interaction Functions
     void on_FrequencySlider_1_valueChanged(int value);
     void on_SineButton_1_clicked(bool);
+    void on_FreqDomain_1_clicked(bool);
 
     void on_FrequencySlider_2_valueChanged(int value);
     void on_SineButton_2_clicked(bool);
@@ -56,5 +58,10 @@ private:
     void generateSineWav(stk::SineWave sineWave, int sineWaveFrequency, QString file);
 
     void generateSuperimposedWav(QString file);
+
+    QVector<double> mFftIndices;
+    fftw_plan mFftPlan;
+    double *mFftIn;
+    double *mFftOut;
 };
 #endif // MAINWINDOW_H
