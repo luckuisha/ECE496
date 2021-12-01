@@ -3,6 +3,7 @@
 
 #include <Stk.h>
 #include "FileWvOut.h"
+#include "fftw3.h"
 
 #include <iostream>
 MainWindow::MainWindow(QWidget *parent)
@@ -55,10 +56,20 @@ void MainWindow::on_FreqDomain_1_clicked(bool) {
     drawWaveFromFile(graph, "");
 
     generateSineWav(sineWave_1, sineWaveFrequency_1, file);
+    //TODO: Move this all into a cpp in the backend
     //fft here
+    mFftIn  = fftw_alloc_real(4410);
+    mFftOut = fftw_alloc_real(4410);
+    mFftPlan = fftw_plan_r2r_1d(4410, mFftIn, mFftOut, FFTW_R2HC,FFTW_ESTIMATE);
+
+    //file->mFftIn
+    //fftw_execute(mFftPlan);
+    //FftOut->file
 
     drawWaveFromFile(graph, file);
     //destroy fft in/out here
+    fftw_free(mFftIn);
+    fftw_free(mFftOut);
 }
 
 
@@ -137,4 +148,9 @@ void MainWindow::generateSuperimposedWav(QString file) {
 MainWindow::~MainWindow()
 {
     delete ui;
+
+    //TODO: Should we free here?
+    //fftw_free(mFftIn);
+    //fftw_free(mFftOut);
+    fftw_destroy_plan(mFftPlan);
 }
