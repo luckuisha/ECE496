@@ -63,8 +63,17 @@ void MainWindow::on_FreqDomain_1_clicked(bool) {
     mFftPlan = fftw_plan_r2r_1d(4410, mFftIn, mFftOut, FFTW_R2HC,FFTW_ESTIMATE);
 
     //file->mFftIn
-    //fftw_execute(mFftPlan);
+    for(int i = 0; i < 4410; i++) {
+        mFftIn[i] = 0.5*(sineWave_1.tick());
+    }
+    fftw_execute(mFftPlan);
     //FftOut->file
+    stk::FileWvOut output;
+    // Open a 16-bit, one-channel WAV formatted output file
+    output.openFile(file.toStdString(), 1, stk::FileWrite::FILE_WAV, stk::Stk::STK_SINT16);
+    for(int i = 0; i < 4410; i++) {
+        output.tick(mFftOut[i]);
+    }
 
     drawWaveFromFile(graph, file);
     //destroy fft in/out here
