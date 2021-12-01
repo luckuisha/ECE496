@@ -14,54 +14,18 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QWidget" name="horizontalLayoutWidget">
+   <widget class="QWidget" name="verticalLayoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>110</x>
-      <y>280</y>
-      <width>401</width>
-      <height>80</height>
+      <x>150</x>
+      <y>0</y>
+      <width>461</width>
+      <height>191</height>
      </rect>
     </property>
-    <layout class="QHBoxLayout" name="horizontalLayout">
+    <layout class="QVBoxLayout" name="InputLayout_1">
      <item>
-      <widget class="QPushButton" name="playButton">
-       <property name="text">
-        <string>Play Imperial March</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="QPushButton" name="playSineButton">
-       <property name="text">
-        <string>Play Sine Wave</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="TimeDomain" name="timeDomainInput" native="true">
-    <property name="geometry">
-     <rect>
-      <x>50</x>
-      <y>80</y>
-      <width>539</width>
-      <height>159</height>
-     </rect>
-    </property>
-   </widget>
-   <widget class="QWidget" name="verticalLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>110</x>
-      <y>360</y>
-      <width>401</width>
-      <height>81</height>
-     </rect>
-    </property>
-    <layout class="QVBoxLayout" name="verticalLayout">
-     <item>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="WaveLabel_1">
        <property name="font">
         <font>
          <weight>75</weight>
@@ -69,7 +33,7 @@
         </font>
        </property>
        <property name="text">
-        <string>Set Sine Wave Frequency</string>
+        <string>Wave 1</string>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -77,22 +41,134 @@
       </widget>
      </item>
      <item>
-      <layout class="QHBoxLayout" name="FrequencyBox">
+      <layout class="QHBoxLayout" name="horizontalLayout_3">
        <item>
-        <widget class="QSlider" name="FrequencySlider">
+        <widget class="QPushButton" name="SineButton_1">
+         <property name="text">
+          <string>Generate Sine Wave</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="FrequencyBox_2">
+       <item>
+        <widget class="QSlider" name="FrequencySlider_1">
          <property name="orientation">
           <enum>Qt::Horizontal</enum>
          </property>
         </widget>
        </item>
        <item>
-        <widget class="QLabel" name="FrequencyLabel">
+        <widget class="QLabel" name="FrequencyLabel_1">
          <property name="text">
           <string>600 Hz</string>
          </property>
         </widget>
        </item>
       </layout>
+     </item>
+     <item>
+      <widget class="TimeDomain" name="timeDomainInput_1" native="true"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_3">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>190</y>
+      <width>461</width>
+      <height>191</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="InputLayout_2">
+     <item>
+      <widget class="QLabel" name="WaveLabel_2">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Wave 2</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="horizontalLayout_4">
+       <item>
+        <widget class="QPushButton" name="SineButton_2">
+         <property name="text">
+          <string>Generate Sine Wave</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <layout class="QHBoxLayout" name="FrequencyBox_3">
+       <item>
+        <widget class="QSlider" name="FrequencySlider_2">
+         <property name="orientation">
+          <enum>Qt::Horizontal</enum>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QLabel" name="FrequencyLabel_2">
+         <property name="text">
+          <string>600 Hz</string>
+         </property>
+        </widget>
+       </item>
+      </layout>
+     </item>
+     <item>
+      <widget class="TimeDomain" name="timeDomainInput_2" native="true"/>
+     </item>
+    </layout>
+   </widget>
+   <widget class="QWidget" name="verticalLayoutWidget_4">
+    <property name="geometry">
+     <rect>
+      <x>150</x>
+      <y>380</y>
+      <width>461</width>
+      <height>161</height>
+     </rect>
+    </property>
+    <layout class="QVBoxLayout" name="outputLayout">
+     <item>
+      <widget class="QLabel" name="WaveLabel_3">
+       <property name="font">
+        <font>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>Output</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="outputButton">
+       <property name="text">
+        <string>Generate</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="TimeDomain" name="timeDomainOutput" native="true"/>
      </item>
     </layout>
    </widget>

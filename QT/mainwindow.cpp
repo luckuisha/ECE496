@@ -19,52 +19,69 @@ void MainWindow::setup_STK() {
 }
 
 void MainWindow::setup_FrequencyBox(int initialFrequency) {
-    ui->FrequencySlider->setMinimum(20);
-    ui->FrequencySlider->setMaximum(22050);
-    ui->FrequencySlider->setSingleStep(100);
-    ui->FrequencySlider->setValue(initialFrequency);
+    ui->FrequencySlider_1->setMinimum(20);
+    ui->FrequencySlider_1->setMaximum(22050);
+    ui->FrequencySlider_1->setSingleStep(100);
+    ui->FrequencySlider_1->setValue(initialFrequency);
+
+    ui->FrequencySlider_2->setMinimum(20);
+    ui->FrequencySlider_2->setMaximum(22050);
+    ui->FrequencySlider_2->setSingleStep(100);
+    ui->FrequencySlider_2->setValue(initialFrequency);
 }
 
-void MainWindow::on_FrequencySlider_valueChanged(int value) {
-    ui->FrequencyLabel->setText(QString::number(value) + "Hz");
-    sineWaveFrequency = value;
+void MainWindow::on_FrequencySlider_1_valueChanged(int value) {
+    ui->FrequencyLabel_1->setText(QString::number(value) + "Hz");
+    sineWaveFrequency_1 = value;
+}
+void MainWindow::on_SineButton_1_clicked(bool) {
+    TimeDomain* graph = ui->timeDomainInput_1;
+
+    QString currentDirectory = QDir::currentPath();
+    QString file = currentDirectory + "/audio_files/gen_sine_1.wav";
+
+    drawWaveFromFile(graph, "");
+
+    generateSineWav(sineWave_1, sineWaveFrequency_1, file);
+    drawWaveFromFile(graph, file);
 }
 
-void MainWindow::drawWaveFromFile(QString file)
+void MainWindow::on_FrequencySlider_2_valueChanged(int value) {
+    ui->FrequencyLabel_2->setText(QString::number(value) + "Hz");
+    sineWaveFrequency_2 = value;
+}
+void MainWindow::on_SineButton_2_clicked(bool) {
+    TimeDomain* graph = ui->timeDomainInput_2;
+
+    QString currentDirectory = QDir::currentPath();
+    QString file = currentDirectory + "/audio_files/gen_sine_2.wav";
+
+    drawWaveFromFile(graph, "");
+
+    generateSineWav(sineWave_2, sineWaveFrequency_2, file);
+    drawWaveFromFile(graph, file);
+}
+
+void MainWindow::on_outputButton_clicked(bool) {
+    TimeDomain* graph = ui->timeDomainOutput;
+
+    QString currentDirectory = QDir::currentPath();
+    QString file = currentDirectory + "/audio_files/gen_sine_output.wav";
+
+    drawWaveFromFile(graph, "");
+
+    generateSuperimposedWav(file);
+
+    drawWaveFromFile(graph, file);
+}
+
+void MainWindow::drawWaveFromFile(TimeDomain* graph, QString file)
 {
-    ui->timeDomainInput->setSource(file);
+    graph->setSource(file);
     //ui->timeDomainInput->plot();
 }
 
-void MainWindow::on_playButton_clicked(bool)
-{
-
-    // Get current cursor position when it exists
-    // If this following section is not loading the sound file
-    // Ensure that you have the right working directory set under
-    // Projects->Run->Working Directory
-    QString currentDirectory = QDir::currentPath();
-    //std::cout << "Play Button Pushed, currentDir =" << currentDirectory.toStdString() << std::endl;
-    QString file = currentDirectory + "/audio_files/ImperialMarch60.wav";
-    drawWaveFromFile(file);
-    //std::cout << "Play Button Finished" << std::endl;
-}
-
-void MainWindow::on_playSineButton_clicked(bool) {
-
-    QString currentDirectory = QDir::currentPath();
-    QString file = currentDirectory + "/audio_files/gen_sine.wav";
-
-    //Clear the graph so that generateSineWave() is not
-    //Accessing the same file
-    //TODO: Better method for this
-    drawWaveFromFile("");
-
-    generateSineWav(file);
-    drawWaveFromFile(file);
-}
-
-void MainWindow::generateSineWav(QString file) {
+void MainWindow::generateSineWav(stk::SineWave sineWave, int sineWaveFrequency, QString file) {
     const float duration_secs = 0.1;
     const int numSamples = duration_secs * stkFrequency;
 
@@ -76,6 +93,25 @@ void MainWindow::generateSineWav(QString file) {
     sineWave.setFrequency(sineWaveFrequency);
     for(int i = 0; i < numSamples; i++) {
         output.tick( sineWave.tick() );
+    }
+
+    output.closeFile();
+}
+
+void MainWindow::generateSuperimposedWav(QString file) {
+    const float duration_secs = 0.1;
+    const int numSamples = duration_secs * stkFrequency;
+
+    stk::FileWvOut output;
+    // Open a 16-bit, one-channel WAV formatted output file
+    output.openFile(file.toStdString(), 1, stk::FileWrite::FILE_WAV, stk::Stk::STK_SINT16);
+
+    sineWave_1.reset();
+    sineWave_1.setFrequency(sineWaveFrequency_1);
+    sineWave_2.reset();
+    sineWave_2.setFrequency(sineWaveFrequency_2);
+    for(int i = 0; i < numSamples; i++) {
+        output.tick(sineWave_1.tick() + sineWave_2.tick());
     }
 
     output.closeFile();

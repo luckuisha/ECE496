@@ -19,7 +19,7 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
-    void drawWaveFromFile(QString file);
+    void drawWaveFromFile(TimeDomain* graph, QString file);
 
     //Adds the controller which manages interactions on the main window
 
@@ -32,20 +32,29 @@ private:
 
 private slots:
     // Interaction Functions
-    void on_FrequencySlider_valueChanged(int value);
-    void on_playButton_clicked(bool);
-    void on_playSineButton_clicked(bool);
+    void on_FrequencySlider_1_valueChanged(int value);
+    void on_SineButton_1_clicked(bool);
+
+    void on_FrequencySlider_2_valueChanged(int value);
+    void on_SineButton_2_clicked(bool);
+
+    void on_outputButton_clicked(bool);
 
 private:
     Ui::MainWindow *ui;
 
     const float stkFrequency = 44100.0;
 
-    int sineWaveFrequency = 440;
-    stk::SineWave sineWave;
+    int sineWaveFrequency_1 = 440;
+    int sineWaveFrequency_2 = 440;
+
+    stk::SineWave sineWave_1;
+    stk::SineWave sineWave_2;
 
     //Generates a .wav file based on the content of sineWave
     //@param file: loction to store generated .wav file
-    void generateSineWav(QString file);
+    void generateSineWav(stk::SineWave sineWave, int sineWaveFrequency, QString file);
+
+    void generateSuperimposedWav(QString file);
 };
 #endif // MAINWINDOW_H
